@@ -1,0 +1,20 @@
+body {
+    background: 
+        linear-gradient(rgba(42, 39, 127, 0.85), rgba(10, 212, 54, 0.85)),
+        url("favicon.ico");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+i{
+ i {
+    font-size: 200px;
+    color: white;
+    transition: 0.3s ease;
+}
+
+i:hover {
+    color: #0ad436;
+    transform: scale(1.2);
+}   
+}
