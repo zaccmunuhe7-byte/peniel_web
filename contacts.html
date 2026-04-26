@@ -1,12 +1,619 @@
 <!DOCTYPE html>
-<html> 
-    <head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Penie Web - Get in Touch</title>
+    <meta name="description" content="Contact Penie Web for premium land and shamba investments. Reach us via phone, WhatsApp, email, or visit our office in Gilgil.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, #0d3d16 0%, #1a5f2a 50%, #2d7a3f 100%);
+            position: relative;
+            text-align: center;
+        }
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+        .page-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .page-hero h1 {
+            color: var(--white);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 16px;
+        }
+        .page-hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            align-items: center;
+            margin-top: 24px;
+        }
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+        .breadcrumb a:hover {
+            color: var(--secondary);
+        }
+        .breadcrumb span {
+            color: var(--secondary);
+        }
+        .breadcrumb .current {
+            color: var(--white);
+        }
+        .contact-section {
+            padding: 100px 0;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+        }
+        .contact-info h2 {
+            margin-bottom: 16px;
+        }
+        .contact-info > p {
+            color: var(--gray);
+            margin-bottom: 40px;
+        }
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 24px;
+            background: var(--light);
+            border-radius: 16px;
+            transition: var(--transition);
+        }
+        .contact-method:hover {
+            background: var(--white);
+            box-shadow: var(--shadow);
+        }
+        .method-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .method-icon i {
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+        .method-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        .method-content p {
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+        .method-content a {
+            color: var(--primary);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .method-content a:hover {
+            color: var(--secondary);
+        }
+        .contact-form-wrapper {
+            background: var(--white);
+            padding: 50px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+        }
+        .contact-form-wrapper h2 {
+            margin-bottom: 16px;
+        }
+        .contact-form-wrapper > p {
+            color: var(--gray);
+            margin-bottom: 32px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--dark);
+            transition: var(--transition);
+            background: var(--white);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(26, 95, 42, 0.3);
+        }
+        .social-section {
+            padding: 100px 0;
+            background: var(--light);
+        }
+        .social-section h2 {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .social-section > .container > p {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 40px;
+        }
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .social-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 24px 40px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .social-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .social-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+        .social-card-icon.facebook { background: #1877F2; }
+        .social-card-icon.instagram { background: linear-gradient(45deg, #f09433, #e6683e, #dc2743, #cc2366, #bc1888); }
+        .social-card-icon.whatsapp { background: #25D366; }
+        .social-card-icon.tiktok { background: #000000; }
+        .social-card-icon.youtube { background: #FF0000; }
+        .social-card-text h3 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+        .social-card-text span {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .map-section {
+            padding: 0;
+            height: 400px;
+        }
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: var(--white);
+        }
+        .map-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .map-placeholder p {
+            opacity: 0.8;
+        }
+        @media (max-width: 1024px) {
+            .contact-grid {
+                gap: 50px;
+            }
+        }
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .contact-form-wrapper {
+                padding: 30px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .social-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .social-card {
+                width: 100%;
+                max-width: 350px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><i class="fa-solid fa-mountain-sun"></i></span>
+                <span class="logo-text">Penie Web</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Properties</a></li>
+                <li><a href="contacts.html" class="active">Contact</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-    </head>
-    <body>  
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <h1>Contact Us</h1>
+            <p>We're here to help you find your dream piece of land. Reach out today!</p>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <span class="current">Contact</span>
+            </div>
+        </div>
+    </section>
 
-    </body>
-    <footer>    
-        
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-tag">Get in Touch</span>
+                    <h2>Let's Find Your Perfect Land</h2>
+                    <p>Whether you're looking to buy, invest, or just have questions about land ownership in Kenya, our team is ready to assist you. Contact us through any of the methods below or fill out the form.</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="method-content">
+                                <h3>Phone</h3>
+                                <p>Mon - Sat: 8:00 AM - 6:00 PM</p>
+                                <a href="tel:+254726641744">+254 726 641 744</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div class="method-content">
+                                <h3>WhatsApp</h3>
+                                <p>Quick chat for inquiries</p>
+                                <a href="https://wa.me/254726641744" target="_blank">+254 726 641 744</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="method-content">
+                                <h3>Email</h3>
+                                <p>We'll respond within 24 hours</p>
+                                <a href="mailto:info@peniweb.com">info@peniweb.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="method-content">
+                                <h3>Office</h3>
+                                <p>Gilgil, Nakuru County, Kenya</p>
+                                <span>Visit by appointment</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-wrapper">
+                    <h2>Send Us a Message</h2>
+                    <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+                    
+                    <form action="#" method="POST">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="Your first name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Your last name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+254 XXX XXX XXX" required>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="interest">I'm Interested In</label>
+                                <select id="interest" name="interest">
+                                    <option value="">Select a property type</option>
+                                    <option value="malindi">Malindi Coastal Plots</option>
+                                    <option value="gilgil">Gilgil Gema Estate</option>
+                                    <option value="mbaruk">Mbaruk Ranch Lands</option>
+                                    <option value="lumruti">Lumruti Prime Plots</option>
+                                    <option value="eburu">Eburu Highland Estate</option>
+                                    <option value="other">Other Locations</option>
+                                    <option value="general">General Inquiry</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="budget">Budget Range</label>
+                                <select id="budget" name="budget">
+                                    <option value="">Select your budget</option>
+                                    <option value="under500">Under KSh 500,000</option>
+                                    <option value="500k-1m">KSh 500,000 - 1,000,000</option>
+                                    <option value="1m-2m">KSh 1,000,000 - 2,000,000</option>
+                                    <option value="2m-5m">KSh 2,000,000 - 5,000,000</option>
+                                    <option value="over5m">Over KSh 5,000,000</option>
+                                    <option value="flexible">Flexible / Discuss</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" placeholder="Tell us about your land requirements, preferred location, and any questions you have..." required></textarea>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <button type="submit" class="submit-btn">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                    Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="social-section">
+        <div class="container">
+            <span class="section-tag" style="display: block; text-align: center;">Follow Us</span>
+            <h2>Connect on Social Media</h2>
+            <p>Stay updated with our latest properties and land opportunities</p>
+            
+            <div class="social-grid">
+                <a href="https://www.facebook.com/profile.php?id=100089133477376" target="_blank" class="social-card">
+                    <div class="social-card-icon facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div class="social-card-text">
+                        <h3>Facebook</h3>
+                        <span>Penie Web</span>
+                    </div>
+                </a>
+                
+                <a href="#" class="social-card">
+                    <div class="social-card-icon instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <div class="social-card-text">
+                        <h3>Instagram</h3>
+                        <span>@peniweb</span>
+                    </div>
+                </a>
+                
+                <a href="https://wa.me/254726641744" class="social-card" target="_blank">
+                    <div class="social-card-icon whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div class="social-card-text">
+                        <h3>WhatsApp</h3>
+                        <span>Chat with us</span>
+                    </div>
+                </a>
+                
+                <a href="#" class="social-card">
+                    <div class="social-card-icon tiktok">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </div>
+                    <div class="social-card-text">
+                        <h3>TikTok</h3>
+                        <span>@peniweb</span>
+                    </div>
+                </a>
+                
+                <a href="#" class="social-card">
+                    <div class="social-card-icon youtube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <div class="social-card-text">
+                        <h3>YouTube</h3>
+                        <span>Penie Web TV</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-section">
+        <div class="map-placeholder">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <p>Gilgil, Nakuru County, Kenya</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon"><i class="fa-solid fa-mountain-sun"></i></span>
+                        <span class="logo-text">Penie Web</span>
+                    </a>
+                    <p>Your trusted partner in premium land and shamba investments across Kenya. We make land ownership simple, secure, and rewarding.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" class="social-link" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" class="social-link" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Properties</a></li>
+                        <li><a href="contacts.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Properties</h4>
+                    <ul>
+                        <li><a href="contacts.html">Malindi Plots</a></li>
+                        <li><a href="contacts.html">Gilgil Land</a></li>
+                        <li><a href="contacts.html">Mbaruk Farms</a></li>
+                        <li><a href="contacts.html">Lumruti Plots</a></li>
+                        <li><a href="contacts.html">Eburu Estate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-phone"></i> <a href="tel:+254726641744">+254 726 641 744</a></li>
+                        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@peniweb.com">info@peniweb.com</a></li>
+                        <li><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County, Kenya</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Penie Web. All rights reserved.</p>
+                <p>Premium Land & Shamba Investments</p>
+            </div>
+        </div>
     </footer>
+
+    <a href="https://wa.me/254726641744" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
 </html>
