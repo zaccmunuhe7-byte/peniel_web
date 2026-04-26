@@ -1,12 +1,838 @@
 <!DOCTYPE html>
-<html> 
-    <head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties | Peniel Prizac Investments - Premium Land Listings</title>
+    <meta name="description" content="Browse our premium land and shamba properties across Kenya. Find your perfect plot in Malindi, Gilgil, Mbaruk, Lumruti, Eburu and more.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, #0d3d16 0%, #1a5f2a 50%, #2d7a3f 100%);
+            position: relative;
+            text-align: center;
+        }
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+        .page-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .page-hero h1 {
+            color: var(--white);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 16px;
+        }
+        .page-hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            align-items: center;
+        }
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+        .breadcrumb a:hover {
+            color: var(--secondary);
+        }
+        .breadcrumb span {
+            color: var(--secondary);
+        }
+        .breadcrumb .current {
+            color: var(--white);
+        }
+        .filter-section {
+            padding: 60px 0;
+            background: var(--light);
+        }
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .filter-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 12px 28px;
+            background: var(--white);
+            border: 2px solid var(--gray-light);
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+        }
+        .properties-section {
+            padding: 100px 0;
+        }
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        .property-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        .property-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        .property-card:hover .property-image img {
+            transform: scale(1.1);
+        }
+        .property-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            z-index: 1;
+        }
+        .property-badge.popular {
+            background: var(--secondary);
+            color: var(--dark);
+        }
+        .property-content {
+            padding: 30px;
+        }
+        .property-content h3 {
+            margin-bottom: 12px;
+            font-size: 1.35rem;
+        }
+        .property-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .property-location i {
+            font-size: 0.9rem;
+        }
+        .property-desc {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .property-features {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .property-features span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        .property-features i {
+            color: var(--primary);
+        }
+        .property-price {
+            margin-bottom: 20px;
+        }
+        .price-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 4px;
+        }
+        .price-amount {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .cta-box {
+            margin-top: 40px;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 20px;
+            text-align: center;
+        }
+        .cta-box h3 {
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+        .cta-box p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 24px;
+        }
+        @media (max-width: 768px) {
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-grid {
+                gap: 10px;
+            }
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><i class="fa-solid fa-mountain-sun"></i></span>
+                <span class="logo-text">Peniel Prizac Investments</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html" class="active">Properties</a></li>
+                <li><a href="contacts.html">Contact</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-    </head>
-    <body>  
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <h1>Our Properties</h1>
+            <p>Discover premium land opportunities across Kenya's most promising locations</p>
+            <div class="breadcrumb" style="margin-top: 24px;">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <span class="current">Properties</span>
+            </div>
+        </div>
+    </section>
 
-    </body>
-    <footer>    
-        
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-grid">
+                <button class="filter-btn active">All Properties</button>
+                <button class="filter-btn">Malindi</button>
+                <button class="filter-btn">Gilgil</button>
+                <button class="filter-btn">Mbaruk</button>
+                <button class="filter-btn">Lumruti</button>
+                <button class="filter-btn">Eburu</button>
+                <button class="filter-btn">Other Areas</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="properties-section">
+        <div class="container">
+            <div class="properties-grid">
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Hot Deal</div>
+                        <img src="500033769_707322968915479_4141104350339471347_n.jpg" alt="Malindi Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Malindi Coastal Plots</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Malindi, Kwale County</p>
+                        <p class="property-desc">Prime coastal land with beach access, perfect for residential villas, holiday homes, or investment rentals.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/8 Acre</span>
+                            <span><i class="fa-solid fa-road"></i> Gated</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 850,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge popular">Most Popular</div>
+                        <img src="501303737_708921275422315_5079039051511744480_n.jpg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Gema Estate</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">High-altitude scenic plots near Lake Nakuru National Park. Ideal for residential farms and eco-lodges.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/2 Acre</span>
+                            <span><i class="fa-solid fa-water"></i> River View</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,200,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Investment</div>
+                        <img src="503568551_713063958341380_4962778746998576249_n.jpg" alt="Mbaruk Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Mbaruk Ranch Lands</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Mbaruk, Nakuru County</p>
+                        <p class="property-desc">Spacious ranch land perfect for cattle farming, agricultural ventures, or large-scale residential development.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 5+ Acres</span>
+                            <span><i class="fa-solid fa-tractor"></i> Farm Land</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 2,500,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">New</div>
+                        <img src="504965800_716092694705173_5273963913887889824_n.jpg" alt="Lumruti Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Lumruti Prime Plots</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Lumruti, Nakuru County</p>
+                        <p class="property-desc">Emerging investment hotspot with growing infrastructure. Perfect for land banking and future development.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/4 Acre</span>
+                            <span><i class="fa-solid fa-road"></i> Tarmac Access</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 650,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Exclusive</div>
+                        <img src="510124578_728277293486713_2060814916043135714_n.jpg" alt="Eburu Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Eburu Highland Estate</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Eburu, Nakuru County</p>
+                        <p class="property-desc">Fertile highland soil at the foot of Eburu Hills. Excellent for dairy farming, horticulture, or weekend retreats.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1 Acre</span>
+                            <span><i class="fa-solid fa-tree"></i> Green Zone</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,800,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Value</div>
+                        <img src="512643707_730055586642217_6896502179077893232_n.jpg" alt="Additional Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Various Kenya Locations</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Across Kenya</p>
+                        <p class="property-desc">We have plots in multiple other locations including Naivasha, Elementaita, and surrounding areas.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> Various Sizes</span>
+                            <span><i class="fa-solid fa-globe"></i> Multiple Areas</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 500,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <!-- New Properties with User's Pictures -->
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">New</div>
+                        <img src="519393397_746730718308037_3888711448037951673_n.jpg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Town Plots</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Prime plots in Gilgil town center with ready infrastructure. Perfect for commercial or residential development.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/8 Acre</span>
+                            <span><i class="fa-solid fa-road"></i> Tarmac Road</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 950,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Hot Deal</div>
+                        <img src="525341744_758455387135570_5369148522519597610_n.jpg" alt="Eburu Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Eburu Farmlands</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Eburu, Nakuru County</p>
+                        <p class="property-desc">Fertile agricultural land near Eburu Hills. Ideal for dairy farming, crop production, or weekend farm retreats.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1 Acre</span>
+                            <span><i class="fa-solid fa-tractor"></i> Farm Ready</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,500,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Investment</div>
+                        <img src="557008955_815096108138164_5501814667049264544_n.jpg" alt="Mbaruk Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Mbaruk Ranch Estate</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Mbaruk, Nakuru County</p>
+                        <p class="property-desc">Spacious ranch land with stunning views. Perfect for cattle farming, eco-lodges, or large residential estates.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 10+ Acres</span>
+                            <span><i class="fa-solid fa-mountain"></i> Scenic View</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 3,500,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">New</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.00.jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Suburban Plots</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Quiet suburban plots near schools and shopping centers. Great for family homes or rental investments.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/4 Acre</span>
+                            <span><i class="fa-solid fa-school"></i> Near Schools</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 750,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Popular</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.01.jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Modern Estate</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Newly developed estate with modern amenities. Gated community with security and paved roads.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/2 Acre</span>
+                            <span><i class="fa-solid fa-gate"></i> Gated</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,350,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Exclusive</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.04.jpeg" alt="Eburu Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Eburu Green Zone</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Eburu, Nakuru County</p>
+                        <p class="property-desc">Lush green area perfect for horticulture or dairy farming. Rich soil and reliable water sources.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 2 Acres</span>
+                            <span><i class="fa-solid fa-leaf"></i> Green Zone</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 2,800,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Value</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.05 (1).jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Affordable Plots</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Budget-friendly plots in a developing area. Great opportunity for first-time land buyers.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/8 Acre</span>
+                            <span><i class="fa-solid fa-tags"></i> Affordable</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 450,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">New</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.05 (2).jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Hillside View</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Elevated plots with beautiful mountain views. Perfect for luxury homes or holiday retreats.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/2 Acre</span>
+                            <span><i class="fa-solid fa-mountain"></i> Mountain View</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,100,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Hot Deal</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.05.jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Town Edge</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Strategic plots near Gilgil town. High potential for commercial development or rental income.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/4 Acre</span>
+                            <span><i class="fa-solid fa-shop"></i> Commercial</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 800,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Investment</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.06 (1).jpeg" alt="Mbaruk Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Mbaruk Valley Farms</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Mbaruk, Nakuru County</p>
+                        <p class="property-desc">Fertile valley land suitable for agriculture or livestock. Good road access and water availability.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 5 Acres</span>
+                            <span><i class="fa-solid fa-seedling"></i> Agricultural</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 4,500,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">New</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.06 (2).jpeg" alt="Eburu Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Eburu Riverside</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Eburu, Nakuru County</p>
+                        <p class="property-desc">Beautiful riverside plots with water access. Ideal for fish farming, irrigation, or peaceful retreats.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1 Acre</span>
+                            <span><i class="fa-solid fa-water"></i> River Front</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,650,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Popular</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.06.jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Central</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Central Gilgil plots with easy access to town center. Perfect for businesses or rental properties.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/8 Acre</span>
+                            <span><i class="fa-solid fa-building"></i> Town Center</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,000,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Exclusive</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.07 (1).jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Premium Estate</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Premium plots in a secured estate environment. Full amenities including power and water.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/2 Acre</span>
+                            <span><i class="fa-solid fa-shield-halved"></i> Secured</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,750,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Value</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.07 (2).jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Growth Area</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Fast-growing area with high appreciation potential. Great for investment or future development.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/4 Acre</span>
+                            <span><i class="fa-solid fa-chart-line"></i> Growing</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 620,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">New</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.07.jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Lake View</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Plots with stunning views of Lake Nakuru. Perfect for hospitality or luxury residential.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/2 Acre</span>
+                            <span><i class="fa-solid fa-water"></i> Lake View</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 1,900,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <div class="property-badge">Investment</div>
+                        <img src="WhatsApp Image 2026-04-24 at 15.30.08.jpeg" alt="Gilgil Land">
+                    </div>
+                    <div class="property-content">
+                        <h3>Gilgil Development Zone</h3>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Gilgil, Nakuru County</p>
+                        <p class="property-desc">Strategic land in upcoming development zone. High potential for appreciation and rental income.</p>
+                        <div class="property-features">
+                            <span><i class="fa-solid fa-ruler-combined"></i> 1/4 Acre</span>
+                            <span><i class="fa-solid fa-construction"></i> Development</span>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Starting from</span>
+                            <span class="price-amount">KSh 580,000</span>
+                        </div>
+                        <a href="contacts.html" class="btn btn-outline">Inquire Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-box">
+                <h3>Can't Find What You're Looking For?</h3>
+                <p>Contact us today and our team will help you find the perfect piece of land tailored to your needs and budget.</p>
+                <a href="contacts.html" class="btn btn-white">Get Customized Search <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon"><i class="fa-solid fa-mountain-sun"></i></span>
+                        <span class="logo-text">Peniel Prizac Investments</span>
+                    </a>
+                    <p>Your trusted partner in premium land and shamba investments across Kenya. We make land ownership simple, secure, and rewarding.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=100089133477376" target="_blank" class="social-link" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/peniweb" target="_blank" class="social-link" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://wa.me/254726641744" target="_blank" class="social-link" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://www.tiktok.com/@peniweb" target="_blank" class="social-link" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="https://www.youtube.com/@peniweb" target="_blank" class="social-link" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Properties</a></li>
+                        <li><a href="contacts.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Properties</h4>
+                    <ul>
+                        <li><a href="contacts.html">Malindi Plots</a></li>
+                        <li><a href="contacts.html">Gilgil Land</a></li>
+                        <li><a href="contacts.html">Mbaruk Farms</a></li>
+                        <li><a href="contacts.html">Lumruti Plots</a></li>
+                        <li><a href="contacts.html">Eburu Estate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-phone"></i> <a href="tel:+254726641744">+254 726 641 744</a></li>
+                        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@peniweb.com">info@peniweb.com</a></li>
+                        <li><i class="fa-solid fa-location-dot"></i> Eburu Street, Butors Tumtum Road, Gilgil, Nakuru</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Peniel Prizac Investments. All rights reserved.</p>
+                <p>Premium Land & Shamba Investments</p>
+            </div>
+        </div>
     </footer>
+
+    <a href="https://wa.me/254726641744" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
 </html>
