@@ -439,7 +439,7 @@
                     <h2>Send Us a Message</h2>
                     <p>Fill out the form below and we'll get back to you as soon as possible.</p>
                     
-                    <form id="contactForm" action="https://formspree.io/f/penielprizac@gmail.com" method="POST">
+                    <form id="contactForm" action="#" method="POST">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="firstName">First Name *</label>
@@ -654,13 +654,14 @@
             }
         });
 
-        // Function to send message via email (direct to Formspree)
-        async function sendViaEmail() {
-            const form = document.getElementById('contactForm');
+        // Function to send message via email (opens email client)
+        function sendViaEmail() {
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
+            const interest = document.getElementById('interest').value;
+            const budget = document.getElementById('budget').value;
             const message = document.getElementById('message').value;
 
             if (!firstName || !lastName || !email || !phone || !message) {
@@ -668,34 +669,22 @@
                 return;
             }
 
-            // Submit form directly to Formspree
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        firstName: firstName,
-                        lastName: lastName,
-                        email: email,
-                        phone: phone,
-                        interest: document.getElementById('interest').value,
-                        budget: document.getElementById('budget').value,
-                        message: message
-                    })
-                });
+            // Peniel's email address
+            const toEmail = 'penielprizac@gmail.com';
+            
+            // Build email subject and body
+            const subject = encodeURIComponent(`Land Inquiry from ${firstName} ${lastName}`);
+            const body = encodeURIComponent(
+                `Name: ${firstName} ${lastName}\n` +
+                `Email: ${email}\n` +
+                `Phone: ${phone}\n` +
+                `Interested In: ${interest || 'Not specified'}\n` +
+                `Budget: ${budget || 'Not specified'}\n\n` +
+                `Message:\n${message}`
+            );
 
-                if (response.ok) {
-                    alert('Thank you! Your message has been sent directly to Peniel via email.');
-                    form.reset();
-                } else {
-                    alert('There was an error sending your message. Please try again or use WhatsApp.');
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
+            // Open email client
+            window.location.href = `mailto:${toEmail}?subject=${subject}&body=${body}`;
         }
 
         // Function to send message via WhatsApp
