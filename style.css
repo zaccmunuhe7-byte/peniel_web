@@ -221,7 +221,7 @@ p {
 
 .nav-links a {
     font-weight: 500;
-    color: var(--white);
+    color: var(--dark); /* Black color */
     position: relative;
     padding: 8px 0;
     transition: var(--transition);
